@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { suscribirNotificaciones } from "../../data/toast.js";
 
 export default function Notificacion() {
@@ -35,9 +36,9 @@ export default function Notificacion() {
         <div className="flex-1 text-sm">
           <p className="font-semibold text-beige-900">Agregado al carrito</p>
           <p className="text-beige-800">{notificacion.mensaje}</p>
-          <a href="./#/carrito" className="mt-1 inline-block font-semibold text-beige-700 hover:underline">
+          <Link to="/carrito" className="mt-1 inline-block font-semibold text-beige-700 hover:underline">
             Ver carrito
-          </a>
+          </Link>
         </div>
         <button
           onClick={() => setVisible(false)}

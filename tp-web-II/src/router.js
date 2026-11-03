@@ -16,5 +16,3 @@ export function navegar(destino) {
   window.location.hash = destino;
 }
 
-
-//Ayudado con IA

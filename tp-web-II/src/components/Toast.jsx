@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { suscribirNotificaciones } from "../../data/toast.js";
 
 export default function Notificacion() {
@@ -21,6 +22,8 @@ export default function Notificacion() {
 
   if (!notificacion) return null;
 
+  const esAviso = notificacion.tipo === "aviso";
+
   return (
     <div aria-live="polite" className="pointer-events-none fixed right-4 top-4 z-50">
       <div
@@ -29,15 +32,24 @@ export default function Notificacion() {
           visible ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
         }`}
       >
-        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-beige-200 text-sm font-bold text-beige-700">
-          ✓
+        <span
+          aria-hidden="true"
+          className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
+            esAviso ? "bg-amber-100 text-amber-700" : "bg-beige-200 text-beige-700"
+          }`}
+        >
+          {esAviso ? "!" : "✓"}
         </span>
         <div className="flex-1 text-sm">
-          <p className="font-semibold text-beige-900">Agregado al carrito</p>
+          <p className="font-semibold text-beige-900">
+            {notificacion.titulo ?? (esAviso ? "Atención" : "Agregado al carrito")}
+          </p>
           <p className="text-beige-800">{notificacion.mensaje}</p>
-          <a href="./#/carrito" className="mt-1 inline-block font-semibold text-beige-700 hover:underline">
-            Ver carrito
-          </a>
+          {!esAviso && (
+            <Link to="/carrito" className="mt-1 inline-block font-semibold text-beige-700 hover:underline">
+              Ver carrito
+            </Link>
+          )}
         </div>
         <button
           onClick={() => setVisible(false)}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import Layout from "./components/Layout.jsx";
 import Home from "./components/Home.jsx";
@@ -10,6 +10,9 @@ import AdminRoute from "./components/AdminRoute.jsx";
 import Login from "./pages/Login.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Admin from "./pages/Admin.jsx";
+import AdminProductos from "./pages/admin/AdminProductos.jsx";
+import AdminCategorias from "./pages/admin/AdminCategorias.jsx";
+import AdminTags from "./pages/admin/AdminTags.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx";
 import NoEncontrada from "./pages/NoEncontrada.jsx";
 
@@ -29,7 +32,12 @@ function App() {
               <Route path="checkout" element={<Checkout />} />
             </Route>
             <Route element={<AdminRoute />}>
-              <Route path="admin" element={<Admin />} />
+              <Route path="admin" element={<Admin />}>
+                <Route index element={<Navigate to="productos" replace />} />
+                <Route path="productos" element={<AdminProductos />} />
+                <Route path="categorias" element={<AdminCategorias />} />
+                <Route path="tags" element={<AdminTags />} />
+              </Route>
             </Route>
             <Route path="*" element={<NoEncontrada />} />
           </Route>

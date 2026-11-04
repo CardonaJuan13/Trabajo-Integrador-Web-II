@@ -14,6 +14,7 @@ export default function Listado() {
   const q = parametros.get("q") ?? "";
   const categoria = parametros.get("categoria") ?? "";
   const tag = parametros.get("tag") ?? "";
+  const orden = parametros.get("orden") ?? "";
 
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -21,7 +22,11 @@ export default function Listado() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => setTexto(q), [q]);
+  const [qAnterior, setQAnterior] = useState(q);
+  if (q !== qAnterior) {
+    setQAnterior(q);
+    setTexto(q);
+  }
 
   useEffect(() => {
     let cancelado = false;
@@ -60,7 +65,7 @@ export default function Listado() {
 
   const visibles = useMemo(() => {
     const buscado = normalizar(q);
-    return productos.filter((producto) => {
+    const filtrados = productos.filter((producto) => {
       const coincideTexto =
         !buscado || normalizar(`${producto.title} ${producto.description}`).includes(buscado);
       const coincideCategoria =
@@ -69,7 +74,10 @@ export default function Listado() {
         !tag || (producto.tags ?? []).some((etiqueta) => String(etiqueta.id) === String(tag));
       return coincideTexto && coincideCategoria && coincideTag;
     });
-  }, [productos, q, categoria, tag]);
+    if (orden === "precio-asc") return [...filtrados].sort((a, b) => a.price - b.price);
+    if (orden === "precio-desc") return [...filtrados].sort((a, b) => b.price - a.price);
+    return filtrados;
+  }, [productos, q, categoria, tag, orden]);
 
   const categoriaActiva = categorias.find((c) => String(c.id) === String(categoria));
   const etiquetaActiva = tag
@@ -144,7 +152,21 @@ export default function Listado() {
             </div>
           )}
 
-          <p className="mt-3 text-sm text-beige-700">{visibles.length} productos</p>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-beige-700">{visibles.length} productos</p>
+            <label className="flex items-center gap-2 text-sm font-semibold text-beige-800">
+              Ordenar por
+              <select
+                value={orden}
+                onChange={(evento) => actualizar("orden", evento.target.value)}
+                className="rounded-lg border border-beige-300 bg-beige-50 px-3 py-1.5 font-normal"
+              >
+                <option value="">Relevancia</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+              </select>
+            </label>
+          </div>
 
           {visibles.length === 0 ? (
             <p className="py-16 text-center text-beige-700">

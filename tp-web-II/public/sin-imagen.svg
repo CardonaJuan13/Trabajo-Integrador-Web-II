@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="Sin imagen">
+  <rect width="400" height="400" fill="#e8d9bf"/>
+  <path d="M110 250v-50a30 30 0 0 1 30-30h120a30 30 0 0 1 30 30v50" fill="none" stroke="#a98a5c" stroke-width="14" stroke-linecap="round"/>
+  <rect x="90" y="230" width="220" height="44" rx="14" fill="#c4a574"/>
+  <path d="M120 274v24M280 274v24" stroke="#a98a5c" stroke-width="12" stroke-linecap="round"/>
+  <text x="200" y="345" font-family="Arial, sans-serif" font-size="22" text-anchor="middle" fill="#705839">Sin imagen</text>
+</svg>

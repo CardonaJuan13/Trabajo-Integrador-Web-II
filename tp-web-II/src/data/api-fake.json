@@ -1,0 +1,303 @@
+{
+  "categorias": [
+    {
+      "id": 338,
+      "title": "Living",
+      "description": "Sillones, sofás, mesas ratonas y racks de TV para armar un living cómodo y con estilo.",
+      "picture": null
+    },
+    {
+      "id": 339,
+      "title": "Comedor",
+      "description": "Mesas, sillas y aparadores para compartir comidas y reunir a la familia.",
+      "picture": null
+    },
+    {
+      "id": 340,
+      "title": "Dormitorio",
+      "description": "Camas, respaldos, mesas de luz y placares pensados para un descanso de calidad.",
+      "picture": null
+    },
+    {
+      "id": 341,
+      "title": "Escritorio y oficina",
+      "description": "Escritorios, sillas ergonómicas y bibliotecas para trabajar o estudiar sin distracciones.",
+      "picture": null
+    }
+  ],
+  "tags": [
+    {
+      "id": 166,
+      "title": "Destacado"
+    },
+    {
+      "id": 167,
+      "title": "Nuevo"
+    },
+    {
+      "id": 168,
+      "title": "Oferta"
+    }
+  ],
+  "productos": [
+    {
+      "id": 1,
+      "title": "Sofá 3 cuerpos Nórdico",
+      "description": "Sofá de tres cuerpos tapizado en tela antimanchas, con patas de madera de eucalipto y almohadones incluidos.",
+      "price": 749900,
+      "category_id": 338,
+      "tag_ids": [
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 2,
+      "title": "Sillón individual Bergère",
+      "description": "Sillón de un cuerpo con respaldo alto y almohadón desmontable, ideal para un rincón de lectura.",
+      "price": 329900,
+      "category_id": 338,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 3,
+      "title": "Mesa ratona Roble Claro",
+      "description": "Mesa ratona rectangular de melamina símil roble con estante inferior para revistas y controles.",
+      "price": 129900,
+      "category_id": 338,
+      "tag_ids": [
+        168
+      ],
+      "pictures": []
+    },
+    {
+      "id": 4,
+      "title": "Rack para TV 160 cm",
+      "description": "Mueble bajo para TV de hasta 65 pulgadas, con dos puertas, estante central y pasacables.",
+      "price": 219900,
+      "category_id": 338,
+      "tag_ids": [
+        168,
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 5,
+      "title": "Puff redondo tejido",
+      "description": "Puff de algodón tejido de 45 cm de diámetro, liviano y fácil de mover de un ambiente a otro.",
+      "price": 59900,
+      "category_id": 338,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 6,
+      "title": "Biblioteca modular 5 estantes",
+      "description": "Biblioteca de pino con cinco estantes regulables para libros, plantas y objetos decorativos.",
+      "price": 179900,
+      "category_id": 338,
+      "tag_ids": [],
+      "pictures": []
+    },
+    {
+      "id": 7,
+      "title": "Mesa de comedor 6 personas",
+      "description": "Mesa rectangular de 180 x 90 cm con tapa de paraíso laqueado y patas metálicas negras.",
+      "price": 389900,
+      "category_id": 339,
+      "tag_ids": [
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 8,
+      "title": "Mesa extensible redonda",
+      "description": "Mesa redonda de 110 cm que se extiende a formato ovalado para recibir hasta seis comensales.",
+      "price": 429900,
+      "category_id": 339,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 9,
+      "title": "Silla Eames blanca",
+      "description": "Silla de polipropileno con patas de madera. Resistente, cómoda y muy fácil de limpiar.",
+      "price": 54900,
+      "category_id": 339,
+      "tag_ids": [
+        168
+      ],
+      "pictures": []
+    },
+    {
+      "id": 10,
+      "title": "Silla tapizada Capitoné",
+      "description": "Silla con respaldo capitoné en pana y patas de madera maciza, con acabado elegante.",
+      "price": 89900,
+      "category_id": 339,
+      "tag_ids": [
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 11,
+      "title": "Aparador 3 puertas",
+      "description": "Aparador de MDF con tres puertas y estantes interiores para guardar vajilla y mantelería.",
+      "price": 349900,
+      "category_id": 339,
+      "tag_ids": [],
+      "pictures": []
+    },
+    {
+      "id": 12,
+      "title": "Banco alto de barra",
+      "description": "Banco de 75 cm de altura con asiento acolchado y apoyapiés, pensado para isla o barra de cocina.",
+      "price": 74900,
+      "category_id": 339,
+      "tag_ids": [
+        168
+      ],
+      "pictures": []
+    },
+    {
+      "id": 13,
+      "title": "Cama 2 plazas con respaldo tapizado",
+      "description": "Cama de dos plazas con estructura de pino y respaldo tapizado en tela gris. Sin somier incluido.",
+      "price": 459900,
+      "category_id": 340,
+      "tag_ids": [
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 14,
+      "title": "Colchón de resortes 2 plazas",
+      "description": "Colchón de resortes con pillow top de espuma, firmeza media y buena aireación.",
+      "price": 399900,
+      "category_id": 340,
+      "tag_ids": [
+        168
+      ],
+      "pictures": []
+    },
+    {
+      "id": 15,
+      "title": "Mesa de luz 2 cajones",
+      "description": "Mesa de luz de melamina blanca con dos cajones y tirador metálico, fácil de combinar con cualquier cama.",
+      "price": 89900,
+      "category_id": 340,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 16,
+      "title": "Placard 3 puertas",
+      "description": "Placard de tres puertas con barral, estantes y dos cajones interiores para organizar la ropa.",
+      "price": 559900,
+      "category_id": 340,
+      "tag_ids": [],
+      "pictures": []
+    },
+    {
+      "id": 17,
+      "title": "Cómoda 4 cajones",
+      "description": "Cómoda de madera con cuatro cajones amplios con guías metálicas y tapa resistente.",
+      "price": 279900,
+      "category_id": 340,
+      "tag_ids": [
+        168,
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 18,
+      "title": "Respaldo tapizado 160 cm",
+      "description": "Respaldo para cama de dos plazas tapizado en pana, con paneles verticales y fijación a la pared.",
+      "price": 149900,
+      "category_id": 340,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 19,
+      "title": "Escritorio recto 140 cm",
+      "description": "Escritorio de 140 x 60 cm con tapa de melamina y patas metálicas, espacio para notebook y monitor.",
+      "price": 189900,
+      "category_id": 341,
+      "tag_ids": [
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 20,
+      "title": "Escritorio en L",
+      "description": "Escritorio esquinero en L con amplia superficie de trabajo y pasacables para equipos.",
+      "price": 269900,
+      "category_id": 341,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    },
+    {
+      "id": 21,
+      "title": "Silla ergonómica de oficina",
+      "description": "Silla con respaldo de malla, soporte lumbar, apoyabrazos regulables y base con ruedas.",
+      "price": 219900,
+      "category_id": 341,
+      "tag_ids": [
+        168,
+        166
+      ],
+      "pictures": []
+    },
+    {
+      "id": 22,
+      "title": "Silla gamer reclinable",
+      "description": "Silla gamer con respaldo reclinable, almohadones cervical y lumbar, y tapizado símil cuero.",
+      "price": 199900,
+      "category_id": 341,
+      "tag_ids": [
+        168
+      ],
+      "pictures": []
+    },
+    {
+      "id": 23,
+      "title": "Estantería industrial 4 estantes",
+      "description": "Estantería con estructura metálica negra y cuatro estantes de madera, ideal para oficina o estudio.",
+      "price": 129900,
+      "category_id": 341,
+      "tag_ids": [],
+      "pictures": []
+    },
+    {
+      "id": 24,
+      "title": "Cajonera móvil 3 cajones",
+      "description": "Cajonera con ruedas y tres cajones con cerradura, se guarda debajo del escritorio.",
+      "price": 99900,
+      "category_id": 341,
+      "tag_ids": [
+        167
+      ],
+      "pictures": []
+    }
+  ]
+}

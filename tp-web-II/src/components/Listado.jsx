@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { obtenerCategorias, obtenerProductos } from "../api.js";
+import { obtenerCategorias, obtenerProductos, obtenerTags } from "../api.js";
 import TarjetaProducto from "./ProductCard.jsx";
 
 const normalizar = (texto) =>
@@ -18,6 +18,7 @@ export default function Listado() {
 
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [tags, setTags] = useState([]);
   const [texto, setTexto] = useState(q);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -32,13 +33,15 @@ export default function Listado() {
     let cancelado = false;
     async function cargar() {
       try {
-        const [listaProductos, listaCategorias] = await Promise.all([
+        const [listaProductos, listaCategorias, listaTags] = await Promise.all([
           obtenerProductos(),
           obtenerCategorias(),
+          obtenerTags(),
         ]);
         if (cancelado) return;
         setProductos(listaProductos);
         setCategorias(listaCategorias);
+        setTags(listaTags);
       } catch (falla) {
         if (!cancelado) setError(falla.message);
       } finally {
@@ -80,11 +83,7 @@ export default function Listado() {
   }, [productos, q, categoria, tag, orden]);
 
   const categoriaActiva = categorias.find((c) => String(c.id) === String(categoria));
-  const etiquetaActiva = tag
-    ? productos
-        .flatMap((producto) => producto.tags ?? [])
-        .find((etiqueta) => String(etiqueta.id) === String(tag))
-    : null;
+  const etiquetaActiva = tags.find((item) => String(item.id) === String(tag));
   const hayFiltros = Boolean(q || categoria || tag);
 
   const estiloBoton = (activo) =>
@@ -119,7 +118,8 @@ export default function Listado() {
 
       {!cargando && !error && (
         <>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-semibold text-beige-800">Categorías:</span>
             <button className={estiloBoton(!categoria)} onClick={() => actualizar("categoria", "")}>
               Todas
             </button>
@@ -128,6 +128,22 @@ export default function Listado() {
                 key={item.id}
                 className={estiloBoton(String(item.id) === String(categoria))}
                 onClick={() => actualizar("categoria", item.id)}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-semibold text-beige-800">Tags:</span>
+            <button className={estiloBoton(!tag)} onClick={() => actualizar("tag", "")}>
+              Todos
+            </button>
+            {tags.map((item) => (
+              <button
+                key={item.id}
+                className={estiloBoton(String(item.id) === String(tag))}
+                onClick={() => actualizar("tag", item.id)}
               >
                 {item.title}
               </button>

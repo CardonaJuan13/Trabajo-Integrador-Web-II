@@ -262,3 +262,4 @@ El detalle de los casos del panel está en [`tp-web-II/docs/CRUD.md`](tp-web-II/
 - **Token en el front:** ver [Seguridad](#seguridad).
 - **Archivos de etapas anteriores sin uso** (se pueden borrar): `src/components/listado-main.jsx`, `carrito-main.jsx` y `ficha-main.jsx`, `src/router.js`, `data/home.js`, `data/categoria.js` y la dependencia `lit` (solo la usan esos dos archivos).
 - Las cuentas demo y su contraseña son públicas por diseño.
+## Documentacion by Claude

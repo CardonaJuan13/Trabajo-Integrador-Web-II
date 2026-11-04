@@ -1,6 +1,5 @@
 import { ErrorValidacion } from "./errores.js";
 
-const esDireccionImagen = (valor) => /^(https?:\/\/|data:image\/|\/)\S+$/i.test(valor);
 const normalizar = (texto) => String(texto ?? "").trim().toLowerCase();
 
 function textoObligatorio(valor, { minimo, maximo }) {
@@ -11,12 +10,13 @@ function textoObligatorio(valor, { minimo, maximo }) {
   return { valor: texto };
 }
 
-function revisarImagenes(lista, campos) {
-  const imagenes = (lista ?? []).map((item) => String(item ?? "").trim()).filter(Boolean);
-  if (imagenes.some((imagen) => !esDireccionImagen(imagen))) {
-    campos.pictures = "Ingresá una dirección válida (que empiece con http://, https:// o /).";
-  }
-  return imagenes;
+const TAMANO_MAXIMO_IMAGEN = 5 * 1024 * 1024;
+
+// La API solo acepta imágenes como archivos subidos (multipart), no como direcciones.
+function revisarImagen(archivo, campo, campos) {
+  if (!archivo) return;
+  if (!archivo.type?.startsWith("image/")) campos[campo] = "El archivo elegido no es una imagen.";
+  else if (archivo.size > TAMANO_MAXIMO_IMAGEN) campos[campo] = "La imagen no puede superar los 5 MB.";
 }
 
 function resolver(campos, valores) {
@@ -46,7 +46,7 @@ export function validarProducto(entrada, datos) {
     campos.tag_ids = "Alguno de los tags elegidos ya no existe.";
   }
 
-  const pictures = revisarImagenes(entrada.pictures, campos);
+  revisarImagen(entrada.imagen, "imagen", campos);
 
   return resolver(campos, {
     title: titulo.valor,
@@ -54,7 +54,6 @@ export function validarProducto(entrada, datos) {
     price: Math.round(precio * 100) / 100,
     category_id: categoriaId,
     tag_ids: tagIds,
-    pictures,
   });
 }
 
@@ -74,13 +73,9 @@ export function validarCategoria(entrada, datos, idActual = null) {
   const descripcion = textoObligatorio(entrada.description, { minimo: 5, maximo: 200 });
   if (descripcion.error) campos.description = descripcion.error;
 
-  const [picture = null] = revisarImagenes(entrada.picture ? [entrada.picture] : [], campos);
-  if (campos.pictures) {
-    campos.picture = campos.pictures;
-    delete campos.pictures;
-  }
+  revisarImagen(entrada.imagen, "imagen", campos);
 
-  return resolver(campos, { title: titulo.valor, description: descripcion.valor, picture });
+  return resolver(campos, { title: titulo.valor, description: descripcion.valor });
 }
 
 export function validarTag(entrada, datos, idActual = null) {

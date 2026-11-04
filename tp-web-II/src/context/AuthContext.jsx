@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { vaciarCarrito } from "../../data/cart.js";
 
 const CLAVE = "sesionLS";
 
@@ -40,7 +39,6 @@ export function AuthProvider({ children }) {
   }
 
   function salir() {
-    vaciarCarrito();
     setUsuario(null);
   }
 

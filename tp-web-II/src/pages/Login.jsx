@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { mostrarNotificacion } from "../../data/toast.js";
 
 export default function Login() {
   const { usuario, sesionIniciada, ingresar, salir } = useAuth();
@@ -11,6 +12,15 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const destino = location.state?.desde ?? "/";
+  const aviso = location.state?.aviso;
+
+  // Si se llegó acá desde una página que requiere sesión (por ejemplo, el carrito),
+  // se avisa al visitante y se quita el aviso del historial para que no se repita al recargar.
+  useEffect(() => {
+    if (!aviso || sesionIniciada) return;
+    mostrarNotificacion(aviso, { tipo: "aviso", titulo: "Iniciá sesión" });
+    navigate(location.pathname, { replace: true, state: { desde: location.state?.desde } });
+  }, [aviso, sesionIniciada, navigate, location.pathname, location.state?.desde]);
 
   function enviar(evento) {
     evento.preventDefault();

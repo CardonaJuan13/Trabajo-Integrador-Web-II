@@ -13,7 +13,7 @@ import DialogoConfirmacion from "../../components/admin/DialogoConfirmacion.jsx"
 import { useCarga } from "../../components/admin/useCarga.js";
 import { useMontado } from "../../components/admin/useMontado.js";
 
-const FORMULARIO_VACIO = { title: "", description: "", picture: "" };
+const FORMULARIO_VACIO = { title: "", description: "", imagen: null };
 
 const estiloEntrada = (error) =>
   `w-full rounded-lg border bg-white px-3 py-2 font-normal text-beige-900 ${
@@ -44,7 +44,7 @@ export default function AdminCategorias() {
     setFormulario({
       title: categoria.title,
       description: categoria.description,
-      picture: categoria.picture ?? "",
+      imagen: null,
     });
     setErrores({});
     setAviso(null);
@@ -133,6 +133,7 @@ export default function AdminCategorias() {
 
       {editando && (
         <form
+          key={editando === "nueva" ? "nueva" : editando.id}
           onSubmit={enviar}
           noValidate
           className="mb-6 rounded-2xl border border-beige-300 bg-beige-50 p-5"
@@ -148,12 +149,12 @@ export default function AdminCategorias() {
                 className={estiloEntrada(errores.title)}
               />
             </Campo>
-            <Campo etiqueta="Imagen (dirección, opcional)" error={errores.picture}>
+            <Campo etiqueta="Imagen (archivo, opcional)" error={errores.imagen}>
               <input
-                value={formulario.picture}
-                onChange={(e) => cambiar("picture", e.target.value)}
-                placeholder="https://…"
-                className={estiloEntrada(errores.picture)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => cambiar("imagen", e.target.files?.[0] ?? null)}
+                className={estiloEntrada(errores.imagen)}
               />
             </Campo>
             <div className="md:col-span-2">

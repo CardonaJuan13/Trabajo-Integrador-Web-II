@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { urlImagen } from "../api.js";
 import { agregarAlCarrito, formatearPrecio } from "../../data/cart.js";
+import { AVISO_INICIAR_SESION } from "../../data/toast.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function TarjetaProducto({ producto }) {
@@ -11,7 +12,7 @@ export default function TarjetaProducto({ producto }) {
   return (
     <article className="flex flex-col rounded-2xl border border-beige-300 bg-beige-50 p-3 shadow-sm transition hover:shadow-md">
       <Link to={`/productos/${producto.id}`}>
-        <img src={imagen} alt={producto.title} className="h-40 w-full rounded-xl object-cover" />
+        <img src={imagen} alt={producto.title} className="h-40 w-full rounded-xl bg-white object-contain p-2" />
       </Link>
       <Link
         to={`/productos/${producto.id}`}
@@ -49,7 +50,7 @@ export default function TarjetaProducto({ producto }) {
         ) : (
           <Link
             to="/login"
-            state={{ desde: location.pathname + location.search }}
+            state={{ desde: location.pathname + location.search, aviso: AVISO_INICIAR_SESION }}
             className="rounded-lg border border-beige-300 px-3 py-1.5 text-center text-sm font-semibold text-beige-800 transition hover:bg-beige-200"
           >
             Ingresá para comprar

@@ -31,7 +31,7 @@ const FORMULARIO_VACIO = {
   price: "",
   category_id: "",
   tag_ids: [],
-  imagen: "",
+  imagen: null,
 };
 
 const estiloEntrada = (error) =>
@@ -66,7 +66,7 @@ export default function AdminProductos() {
       price: String(producto.price),
       category_id: String(producto.category_id),
       tag_ids: producto.tag_ids,
-      imagen: producto.pictures?.[0] ?? "",
+      imagen: null,
     });
     setErrores({});
     setAviso(null);
@@ -99,7 +99,7 @@ export default function AdminProductos() {
       price: formulario.price,
       category_id: formulario.category_id,
       tag_ids: formulario.tag_ids,
-      pictures: formulario.imagen.trim() ? [formulario.imagen] : [],
+      imagen: formulario.imagen,
     };
     try {
       const esNuevo = editando === "nuevo";
@@ -174,6 +174,7 @@ export default function AdminProductos() {
 
       {editando && (
         <form
+          key={editando === "nuevo" ? "nuevo" : editando.id}
           onSubmit={enviar}
           noValidate
           className="mb-6 rounded-2xl border border-beige-300 bg-beige-50 p-5"
@@ -213,12 +214,12 @@ export default function AdminProductos() {
                 ))}
               </select>
             </Campo>
-            <Campo etiqueta="Imagen (dirección, opcional)" error={errores.pictures}>
+            <Campo etiqueta="Imagen (archivo, opcional)" error={errores.imagen}>
               <input
-                value={formulario.imagen}
-                onChange={(e) => cambiar("imagen", e.target.value)}
-                placeholder="https://…"
-                className={estiloEntrada(errores.pictures)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => cambiar("imagen", e.target.files?.[0] ?? null)}
+                className={estiloEntrada(errores.imagen)}
               />
             </Campo>
             <div className="md:col-span-2">
@@ -304,7 +305,7 @@ export default function AdminProductos() {
                     <img
                       src={urlImagen(producto.pictures?.[0])}
                       alt=""
-                      className="h-10 w-10 rounded-lg object-cover"
+                      className="h-10 w-10 rounded-lg bg-white object-contain"
                     />
                   </td>
                   <td className="px-3 py-2 font-semibold">{producto.title}</td>

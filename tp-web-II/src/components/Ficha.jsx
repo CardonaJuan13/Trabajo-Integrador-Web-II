@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { obtenerProductos, urlImagen } from "../api.js";
 import { agregarAlCarrito, useCarrito, formatearPrecio } from "../../data/cart.js";
+import { AVISO_INICIAR_SESION } from "../../data/toast.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Ficha() {
@@ -60,7 +61,7 @@ export default function Ficha() {
           <img
             src={imagenPrincipal}
             alt={producto.title}
-            className="aspect-square w-full rounded-2xl border border-beige-300 object-cover"
+            className="aspect-square w-full rounded-2xl border border-beige-300 bg-white object-contain p-4"
           />
           {imagenes.length > 1 && (
             <div className="mt-3 flex gap-2">
@@ -73,7 +74,7 @@ export default function Ficha() {
                   <img
                     src={urlImagen(imagen)}
                     alt=""
-                    className={`h-16 w-16 rounded-lg object-cover ${
+                    className={`h-16 w-16 rounded-lg bg-white object-contain p-1 ${
                       indice === seleccionada
                         ? "ring-2 ring-beige-600"
                         : "opacity-70 hover:opacity-100"
@@ -125,7 +126,7 @@ export default function Ficha() {
             ) : (
               <Link
                 to="/login"
-                state={{ desde: location.pathname + location.search }}
+                state={{ desde: location.pathname + location.search, aviso: AVISO_INICIAR_SESION }}
                 className="rounded-lg bg-beige-600 px-6 py-3 font-semibold text-white transition hover:bg-beige-700"
               >
                 Ingresá para comprar

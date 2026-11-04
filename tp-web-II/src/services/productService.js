@@ -1,54 +1,65 @@
-import { cargarDatos, esperar, guardarDatos, siguienteId } from "./almacen.js";
-import { ErrorNoEncontrado } from "./errores.js";
+import { peticion } from "./apiClient.js";
 import { exigirAdmin } from "./permisos.js";
 import { validarProducto } from "./validaciones.js";
 
-function armarProducto(producto, datos) {
-  return {
-    ...producto,
-    category: datos.categorias.find((categoria) => categoria.id === producto.category_id) ?? null,
-    tags: producto.tag_ids
-      .map((id) => datos.tags.find((tag) => tag.id === id))
-      .filter(Boolean),
-  };
-}
+const LIMITE = 1000;
+
+// La API devuelve `tags` como objetos; el panel también necesita sus ids.
+const normalizarProducto = (producto) => ({
+  ...producto,
+  category: producto.category ?? null,
+  tags: producto.tags ?? [],
+  tag_ids: (producto.tags ?? []).map((tag) => tag.id),
+  pictures: producto.pictures ?? [],
+});
 
 export async function obtenerProductos() {
-  await esperar();
-  const datos = await cargarDatos();
-  return datos.productos.map((producto) => armarProducto(producto, datos));
+  const productos = await peticion(`/products/?limit=${LIMITE}`);
+  return productos.map(normalizarProducto);
+}
+
+async function datosParaValidar() {
+  const [categorias, tags] = await Promise.all([
+    peticion(`/categories/?limit=${LIMITE}`),
+    peticion(`/tags/?limit=${LIMITE}`),
+  ]);
+  return { categorias, tags };
+}
+
+async function subirImagen(id, archivo) {
+  if (!archivo) return null;
+  const formulario = new FormData();
+  formulario.append("files", archivo);
+  return peticion(`/products/${id}/pictures`, { metodo: "POST", cuerpo: formulario });
+}
+
+async function obtenerProducto(id) {
+  return normalizarProducto(await peticion(`/products/${id}`));
 }
 
 export async function crearProducto(entrada) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  const nuevo = { id: siguienteId(datos.productos), ...validarProducto(entrada, datos) };
-  guardarDatos({ ...datos, productos: [...datos.productos, nuevo] });
-  return armarProducto(nuevo, datos);
+  const valores = validarProducto(entrada, await datosParaValidar());
+  const creado = await peticion("/products/", { metodo: "POST", cuerpo: valores });
+  if (entrada.imagen) {
+    await subirImagen(creado.id, entrada.imagen);
+    return obtenerProducto(creado.id);
+  }
+  return normalizarProducto(creado);
 }
 
 export async function actualizarProducto(id, entrada) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  if (!datos.productos.some((producto) => producto.id === id)) {
-    throw new ErrorNoEncontrado("El producto ya no existe.");
+  const valores = validarProducto(entrada, await datosParaValidar());
+  const actualizado = await peticion(`/products/${id}`, { metodo: "PUT", cuerpo: valores });
+  if (entrada.imagen) {
+    await subirImagen(id, entrada.imagen);
+    return obtenerProducto(id);
   }
-  const actualizado = { id, ...validarProducto(entrada, datos) };
-  guardarDatos({
-    ...datos,
-    productos: datos.productos.map((producto) => (producto.id === id ? actualizado : producto)),
-  });
-  return armarProducto(actualizado, datos);
+  return normalizarProducto(actualizado);
 }
 
 export async function eliminarProducto(id) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  if (!datos.productos.some((producto) => producto.id === id)) {
-    throw new ErrorNoEncontrado("El producto ya no existe.");
-  }
-  guardarDatos({ ...datos, productos: datos.productos.filter((producto) => producto.id !== id) });
+  await peticion(`/products/${id}`, { metodo: "DELETE" });
 }

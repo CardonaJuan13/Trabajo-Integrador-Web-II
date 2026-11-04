@@ -1,51 +1,36 @@
-import { cargarDatos, esperar, guardarDatos, siguienteId } from "./almacen.js";
-import { ErrorNoEncontrado } from "./errores.js";
+import { peticion } from "./apiClient.js";
 import { exigirAdmin } from "./permisos.js";
 import { validarTag } from "./validaciones.js";
 
-const contarProductos = (tag, datos) =>
-  datos.productos.filter((producto) => producto.tag_ids.includes(tag.id)).length;
+const LIMITE = 1000;
+
+const listarTags = () => peticion(`/tags/?limit=${LIMITE}`);
+const listarProductos = () => peticion(`/products/?limit=${LIMITE}`);
+
+const contarProductos = (tag, productos) =>
+  productos.filter((producto) => (producto.tags ?? []).some((item) => item.id === tag.id)).length;
 
 export async function obtenerTags() {
-  await esperar();
-  const datos = await cargarDatos();
-  return datos.tags.map((tag) => ({ ...tag, cantidadProductos: contarProductos(tag, datos) }));
+  const [tags, productos] = await Promise.all([listarTags(), listarProductos()]);
+  return tags.map((tag) => ({ ...tag, cantidadProductos: contarProductos(tag, productos) }));
 }
 
 export async function crearTag(entrada) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  const nuevo = { id: siguienteId(datos.tags), ...validarTag(entrada, datos) };
-  guardarDatos({ ...datos, tags: [...datos.tags, nuevo] });
-  return nuevo;
+  const valores = validarTag(entrada, { tags: await listarTags() });
+  return peticion("/tags/", { metodo: "POST", cuerpo: valores });
 }
 
 export async function actualizarTag(id, entrada) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  if (!datos.tags.some((tag) => tag.id === id)) throw new ErrorNoEncontrado("El tag ya no existe.");
-  const actualizado = { id, ...validarTag(entrada, datos, id) };
-  guardarDatos({ ...datos, tags: datos.tags.map((tag) => (tag.id === id ? actualizado : tag)) });
-  return actualizado;
+  const valores = validarTag(entrada, { tags: await listarTags() }, id);
+  return peticion(`/tags/${id}`, { metodo: "PUT", cuerpo: valores });
 }
 
 export async function eliminarTag(id) {
   exigirAdmin();
-  await esperar();
-  const datos = await cargarDatos();
-  const tag = datos.tags.find((item) => item.id === id);
-  if (!tag) throw new ErrorNoEncontrado("El tag ya no existe.");
-
-  const productosAfectados = contarProductos(tag, datos);
-  guardarDatos({
-    ...datos,
-    tags: datos.tags.filter((item) => item.id !== id),
-    productos: datos.productos.map((producto) => ({
-      ...producto,
-      tag_ids: producto.tag_ids.filter((tagId) => tagId !== id),
-    })),
-  });
+  const productos = await listarProductos();
+  const productosAfectados = contarProductos({ id }, productos);
+  await peticion(`/tags/${id}`, { metodo: "DELETE" });
   return { productosAfectados };
 }

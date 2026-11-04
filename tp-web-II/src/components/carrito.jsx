@@ -35,7 +35,7 @@ export default function Carrito() {
                 <img
                   src={articulo.imagen}
                   alt={articulo.titulo}
-                  className="h-20 w-20 rounded-xl object-cover"
+                  className="h-20 w-20 rounded-xl bg-white object-contain p-1"
                 />
                 <div className="flex-1">
                   <h2 className="text-sm font-semibold text-beige-900">{articulo.titulo}</h2>
